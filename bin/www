@@ -1,9 +1,13 @@
 #!/usr/bin/env coffee
 
-debug = require("debug")("shoutcast-player")
+debug = require("debug")("express")
+
 app = require("../app")
+server = require("http").Server(app)
+realtime = require("../realtime")(server)
+
 
 app.set "port", process.env.PORT or 3000
 
-server = app.listen app.get("port"), ->
-  debug "Express server listening on port " + server.address().port
+server.listen app.get("port"), ->
+  debug "Express server listening on port " + app.get("port")

@@ -3,7 +3,7 @@ html
   head
     title= title
     != js('application')
+    script(src='/socket.io/socket.io.js')
     != css('application')
   body
-    .container-fluid
-      block content
+    block content
