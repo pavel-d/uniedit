@@ -8,9 +8,14 @@ $ ->
   aceDocument.on 'change', (e) ->
     updateRemoteDocument(e.data) unless supress
 
-  socket.on 'documentUpdate', (data) =>
+  socket.on 'documentUpdate', (data) ->
     supress = true
     updateLocalDocument(data)
+    supress = false
+
+  socket.on 'documentFullUpdate', (data) ->
+    supress = true
+    aceDocument.setValue(data.text)
     supress = false
 
 
@@ -18,7 +23,7 @@ $ ->
     action = data.action
     switch action
       when 'insert'
-        aceDocument.insert(data.pos, data.text)
+        aceDocument.insert(data.range.start, data.text)
       when 'remove'
         aceDocument.remove(data.range)
 
@@ -43,6 +48,15 @@ $ ->
 
   remoteDoc =
     insert: (range, text) ->
-      socket.emit('documentChanged', { action: 'insert', range: range, text: text })
+      socket.emit('documentChanged', { action: 'insert', range: range, pos: rangeToPos(range), text: text })
     remove: (range, length) ->
-      socket.emit('documentChanged', { action: 'remove', range: range, length: length })
+      socket.emit('documentChanged', { action: 'remove', range: range, pos: rangeToPos(range), length: length })
+
+  rangeToPos = (range) ->
+    lines = aceDocument.getLines 0,  range.start.row
+    pos = 0
+
+    for line, index in lines
+      pos += if (index < range.start.row) then line.length else range.start.column
+
+    pos + range.start.row
