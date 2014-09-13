@@ -1,6 +1,6 @@
 $ ->
 
-  socket = io.connect 'http://localhost:3000/';
+  socket = io.connect '/';
   aceDocument = AnEditor.getSession().getDocument()
 
   supress = false
