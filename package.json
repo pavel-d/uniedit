@@ -1,0 +1,33 @@
+{
+  "name": "express-coffee-template",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "bin/www",
+    "test": "cake test"
+  },
+  "dependencies": {
+    "node-sass": "0.9.3",
+    "connect-assets": "~4.3.0",
+    "coffee-script": "~1.7.1",
+    "mocha": "~1.21.3",
+    "chai": "1.9.1",
+    "express": "~4.2.0",
+    "superagent": "~0.18.2",
+    "static-favicon": "~1.0.0",
+    "morgan": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "jade": "~1.3.0"
+  },
+  "main": "bin/www",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "cake": "~0.1.1"
+  },
+  "author": "Pavel Dotsulenko",
+  "license": "ISC"
+}
