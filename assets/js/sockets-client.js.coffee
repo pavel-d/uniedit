@@ -1,12 +1,18 @@
 $ ->
 
-  socket = io.connect '/';
+  documentId = $('#editor').data('document-id')
+
+  socket = io.connect '/'
   aceDocument = AnEditor.getSession().getDocument()
 
   supress = false
 
   aceDocument.on 'change', (e) ->
     updateRemoteDocument(e.data) unless supress
+
+  socket.on 'connect', ->
+    console.log 'Connected'
+    socket.emit('documentRequest', id: documentId)
 
   socket.on 'documentUpdate', (data) ->
     supress = true
@@ -48,9 +54,9 @@ $ ->
 
   remoteDoc =
     insert: (range, text) ->
-      socket.emit('documentChanged', { action: 'insert', range: range, pos: rangeToPos(range), text: text })
+      socket.emit('documentChanged', { id: documentId, action: 'insert', range: range, pos: rangeToPos(range), text: text })
     remove: (range, length) ->
-      socket.emit('documentChanged', { action: 'remove', range: range, pos: rangeToPos(range), length: length })
+      socket.emit('documentChanged', { id: documentId, action: 'remove', range: range, pos: rangeToPos(range), length: length })
 
   rangeToPos = (range) ->
     lines = aceDocument.getLines 0,  range.start.row

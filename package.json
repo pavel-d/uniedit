@@ -1,26 +1,27 @@
 {
-  "name": "express-coffee-template",
+  "name": "uniedit",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "bin/www",
+    "start": "coffee bin/www",
     "test": "cake test"
   },
   "dependencies": {
-    "node-sass": "0.9.3",
-    "connect-assets": "~4.3.0",
-    "coffee-script": "~1.7.1",
-    "mocha": "~1.21.3",
-    "chai": "1.9.1",
-    "express": "~4.2.0",
-    "superagent": "~0.18.2",
-    "static-favicon": "~1.0.0",
-    "morgan": "~1.0.0",
-    "cookie-parser": "~1.0.1",
     "body-parser": "~1.0.0",
+    "chai": "1.9.1",
+    "coffee-script": "~1.7.1",
+    "connect-assets": "~4.3.0",
+    "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
+    "express": "~4.2.0",
     "jade": "~1.3.0",
-    "socket.io": "^1.1.0"
+    "mocha": "~1.21.3",
+    "mongoose": "^3.8.16",
+    "morgan": "~1.0.0",
+    "node-sass": "0.9.3",
+    "socket.io": "^1.1.0",
+    "static-favicon": "~1.0.0",
+    "superagent": "~0.18.2"
   },
   "main": "bin/www",
   "directories": {

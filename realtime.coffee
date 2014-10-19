@@ -1,19 +1,26 @@
-Document = require './models/document'
+Document = require('./models').Document
 
 module.exports = (server) ->
   io = require('socket.io')(server)
   
-  document = new Document()
+  io.on 'connect', (socket) ->
+    
+    socket.on 'documentRequest', (data) ->
+      documentId = data.id
+      Document.findById documentId, (err, doc) ->
+        socket.emit 'documentFullUpdate', { text: doc.text }
 
-  io.on 'connection', (socket) -> 
-    socket.emit 'documentFullUpdate', { text: document.text }
     socket.on 'documentChanged', (data) ->
       action = data.action
+      documentId = data.id
 
       switch action
         when 'insert'
-          document.insert(data.pos, data.text)
-          socket.broadcast.emit 'documentUpdate', { action: 'insert', range: data.range, text: data.text }
+          Document.findById documentId, (err, doc) ->
+            console.log data.text
+            doc.insert data.pos, data.text, ->
+              socket.broadcast.emit 'documentUpdate', { action: 'insert', range: data.range, text: data.text }
         when 'remove'
-          document.remove(data.pos, data.length)
-          socket.broadcast.emit 'documentUpdate', { action: 'remove', range: data.range }
+          Document.findById documentId, (err, doc) ->
+            doc.remove data.pos, data.length, ->
+              socket.broadcast.emit 'documentUpdate', { action: 'remove', range: data.range }
