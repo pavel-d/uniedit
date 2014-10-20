@@ -3,10 +3,9 @@ Document = require('../models').Document
 # new Document().save
 
 module.exports.index = (req, res) ->
-  doc = new Document()
-  doc.save (err) ->
-    res.redirect '/' + doc._id
+  doc = Document.create().then (doc) ->
+    res.redirect '/' + doc.id
 
 module.exports.show = (req, res) ->
-  Document.findById req.params.id, (err, doc) ->
+  Document.find(where: {id: req.params.id}).then (doc) ->
     res.render 'doc', { doc: doc }

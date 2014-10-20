@@ -1,35 +1,35 @@
 config = require '../config'
 
-mongoose = require 'mongoose'
+Sequelize = require 'sequelize'
 
-mongoose.connect 'mongodb://localhost/test'
+sequelize = new Sequelize(process.env.DATABASE_URL || 'mysql://root@localhost/uniedit')
 
-# Document Schema
-documentSchema = mongoose.Schema
-  text: String
-  version: Number
-  created_at: Date
-  updated_at: Date
 
-documentSchema.pre 'save', (next) ->
-  @set('created_at', new Date) if @isNew
-  @set('updated_at', new Date)
-  next()
+Document = sequelize.define 'Document',
+  {
+    text:
+      type: Sequelize.TEXT,
+      defaultValue: ''
+  },
+  {
+    instanceMethods:
+      insert: (pos, newString, transaction) ->
+        text = @getDataValue('text')
+        if (pos > 0)
+          @setDataValue('text', text.substring(0, pos) + newString + text.substring(pos, text.length))
+        else
+          @setDataValue('text', newString + text)
+        @save({ transaction: transaction })
 
-# Instance Methods
-documentSchema.methods.insert = (pos, newString, cb) ->
-  if (pos > 0)
-    @text = @text.substring(0, pos) + newString + @text.substring(pos, @text.length)
-  else
-    @text = newString + @text
-  @save(cb)
+      remove: (pos, length, transaction) ->
+        text = @getDataValue('text')
+        newText = text.slice(0, pos) + text.slice(pos + length, text.length)
+        @setDataValue('text', newText)
+        @save({ transaction: transaction })
+  }
 
-documentSchema.methods.remove = (pos, length, cb) ->
-  @text.slice(0, pos) + @text.slice(pos + length, @text.length)
-  @save(cb)
-
-# Model
-Document = mongoose.model 'Document', documentSchema
-
+# Create DB structure
+Document.sync()
 
 module.exports.Document = Document
+module.exports.sequelize = sequelize

@@ -3,6 +3,7 @@ $ ->
   documentId = $('#editor').data('document-id')
 
   socket = io.connect '/'
+
   aceDocument = AnEditor.getSession().getDocument()
 
   supress = false
@@ -11,7 +12,6 @@ $ ->
     updateRemoteDocument(e.data) unless supress
 
   socket.on 'connect', ->
-    console.log 'Connected'
     socket.emit('documentRequest', id: documentId)
 
   socket.on 'documentUpdate', (data) ->
