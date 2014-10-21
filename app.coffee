@@ -19,7 +19,8 @@ app.use bodyParser.urlencoded()
 app.use cookieParser()
 app.use connectAssets({ paths: ['assets/js', 'assets/css', 'assets/vendor'] })
 app.use express.static(path.join(__dirname, 'public'))
-app.use '/assets', express.static(path.join(__dirname, 'assets/vendor'))
+app.use express.static(path.join(__dirname, 'assets/vendor'))
+app.use '/', express.static(path.join(__dirname, 'assets/vendor/ace'))
 
 app.use '/', router
 
