@@ -2,7 +2,7 @@ config = require '../config'
 
 Sequelize = require 'sequelize'
 
-sequelize = new Sequelize(process.env.DATABASE_URL || 'mysql://root@localhost/uniedit')
+sequelize = new Sequelize(config.database)
 
 
 Document = sequelize.define 'Document',
