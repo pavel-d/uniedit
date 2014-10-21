@@ -2,7 +2,7 @@
 
 Example: http://unieditor.herokuapp.com/
 
-1. Open http://unieditor.herokuapp.com/, you'll be redirected to newly created document -> http://unieditor.herokuapp.com/:id
+1. Open http://unieditor.herokuapp.com/, to create new document
 2. Share the link to someone
 3. Start writing, text will be updated across all browsers via websockets in realtime
 
